@@ -11,7 +11,7 @@ function normalizeText(value = '') {
 function parseRows(block) {
   const rows = [...block.querySelectorAll(':scope > div')];
   const config = {
-    completeMessage: 'Great job! You completed the quiz.',
+    completeMessage: 'Adventure unlocked! You aced the quiz.',
     doNotMarkLessonAsCompleted: false,
   };
 

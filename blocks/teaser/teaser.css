@@ -7,7 +7,7 @@ main .teaser {
   text-align: center;
   font-family: var(--font-family-serif);
   font-size: var(--body-font-size-m);
-  font-weight: 500;
+  font-weight: 700;
   color: light-dark(var(--color-ink), var(--color-parchment));
   transition: transform 0.5s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)),
     box-shadow 0.5s ease,
@@ -17,7 +17,7 @@ main .teaser {
 main .teaser:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lift-m);
-  border-color: light-dark(var(--color-gold), rgb(197 160 89 / 40%));
+  border-color: light-dark(var(--color-gold), rgb(255 199 25 / 40%));
 }
 
 main .teaser > div {
