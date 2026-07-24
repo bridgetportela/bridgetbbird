@@ -187,19 +187,19 @@ function drawChartWithChartJs(canvas, chartData) {
       labels,
       datasets: [
         {
-          label: 'Value of investment',
+          label: 'Your savings',
           data: valueOfInvestmentData,
-          backgroundColor: 'rgba(184, 217, 235, 0.7)',
-          borderColor: 'rgb(126, 184, 218)',
+          backgroundColor: 'rgba(255, 199, 25, 0.7)',
+          borderColor: 'rgb(255, 199, 25)',
           borderWidth: 0,
           fill: true,
           tension: 0.2,
         },
         {
-          label: 'Total interest earned',
+          label: 'Growth & rewards',
           data: interestData,
-          backgroundColor: 'rgba(57, 96, 119, 0.7)',
-          borderColor: 'rgb(90, 138, 158)',
+          backgroundColor: 'rgba(255, 0, 0, 0.65)',
+          borderColor: 'rgb(255, 0, 0)',
           borderWidth: 0,
           fill: true,
           tension: 0.2,
@@ -228,7 +228,7 @@ function drawChartWithChartJs(canvas, chartData) {
           stacked: true,
         },
         y: {
-          title: { display: true, text: 'Total value' },
+          title: { display: true, text: 'Trip fund value' },
           stacked: true,
           beginAtZero: true,
           ticks: {
@@ -255,7 +255,7 @@ function buildChartContainer(block, chartData) {
   const wrap = createTag('div', { class: 'compound-interest-calculator-chart-wrap' });
   const canvas = createTag('canvas', {
     class: 'compound-interest-calculator-chart',
-    'aria-label': 'Stacked area chart showing value of investment and interest earned over time',
+    'aria-label': 'Stacked area chart showing your travel savings and growth over time',
   });
   wrap.append(canvas);
 
@@ -282,15 +282,15 @@ function metric(title, value, note) {
 function buildLegend() {
   const legend = createTag('details', { class: 'compound-interest-calculator-legend' });
   legend.append(
-    createTag('summary', {}, 'How to read this calculator'),
+    createTag('summary', {}, 'How to read this planner'),
     createTag('div', { class: 'compound-interest-calculator-legend-content' }, [
       createTag('ul', {}, [
-        createTag('li', {}, 'Final balance = initial investment plus contributions, compounded at the chosen rate and frequency.'),
-        createTag('li', {}, 'Total interest = final balance minus (initial investment + all regular contributions).'),
-        createTag('li', {}, 'Compounding frequency affects growth: more frequent compounding yields slightly higher results.'),
-        createTag('li', {}, 'Inflation-adjusted (real) value shows purchasing power in today\'s dollars.'),
+        createTag('li', {}, 'Trip fund = starting fund plus regular savings, grown at the chosen return and frequency.'),
+        createTag('li', {}, 'Growth & rewards = final trip fund minus (starting fund + all regular savings).'),
+        createTag('li', {}, 'Compounding frequency matters: more frequent growth yields slightly higher results.'),
+        createTag('li', {}, 'Inflation-adjusted (real) value shows what your fund is worth in today\'s dollars.'),
       ]),
-      createTag('p', { class: 'compound-interest-calculator-disclaimer' }, 'Estimates only. Not financial advice.'),
+      createTag('p', { class: 'compound-interest-calculator-disclaimer' }, 'Estimates only. For planning your adventures, not financial advice.'),
     ]),
   );
   return legend;
@@ -333,21 +333,21 @@ export default function decorate(block) {
 
   add({
     id: 'cic-initial',
-    label: 'Initial investment',
+    label: 'Starting trip fund',
     value: DEFAULTS.initialInvestment,
     min: 0,
     step: 500,
     suffix: 'CAD',
-    tooltip: 'Amount you start with today.',
+    tooltip: 'Amount you have saved for travel today.',
   });
   add({
     id: 'cic-contribution',
-    label: 'Regular contribution amount',
+    label: 'Regular travel savings',
     value: DEFAULTS.regularContribution,
     min: 0,
     step: 50,
     suffix: 'CAD',
-    tooltip: 'Amount you add at the selected frequency.',
+    tooltip: 'Amount you add to your trip fund at the selected frequency.',
   });
   const contribSelect = buildSelect(
     'cic-contrib-freq',
@@ -366,13 +366,13 @@ export default function decorate(block) {
 
   add({
     id: 'cic-rate',
-    label: 'Annual interest rate',
+    label: 'Annual growth / rewards rate',
     value: DEFAULTS.annualRate,
     min: 0,
     max: 50,
     step: 0.1,
     suffix: '%',
-    tooltip: 'Expected annual rate of return (e.g. 5 for 5%).',
+    tooltip: 'Expected annual growth on your trip fund, including points & miles value (e.g. 5 for 5%).',
   });
   const compoundSelect = buildSelect(
     'cic-compound-freq',
@@ -390,13 +390,13 @@ export default function decorate(block) {
 
   add({
     id: 'cic-years',
-    label: 'Investment length',
+    label: 'Time until your trip',
     value: DEFAULTS.years,
     min: 0.5,
     max: 50,
     step: 0.5,
     suffix: 'years',
-    tooltip: 'Number of years to project.',
+    tooltip: 'Number of years until you travel.',
   });
 
   addToggle('cic-inflation', 'Adjust for inflation', DEFAULTS.adjustForInflation);
@@ -438,12 +438,12 @@ export default function decorate(block) {
     output.textContent = '';
 
     output.append(
-      metric('Final balance', money(result.finalBalance), 'Projected value at end of term.'),
-      metric('Total contributions', money(result.totalContributions), 'Initial investment plus all regular contributions.'),
-      metric('Total interest earned', money(result.totalInterest), 'Growth from compounding.'),
+      metric('Trip fund total', money(result.finalBalance), 'Projected trip fund by the time you travel.'),
+      metric('Total saved', money(result.totalContributions), 'Starting trip fund plus all regular travel savings.'),
+      metric('Growth & rewards', money(result.totalInterest), 'Extra value from compounding growth and points & miles.'),
     );
     if (result.realFinalBalance != null) {
-      output.append(metric('Real (inflation-adjusted) final balance', money(result.realFinalBalance), 'Purchasing power in today\'s dollars.'));
+      output.append(metric('Real (inflation-adjusted) trip fund', money(result.realFinalBalance), 'What your trip fund is worth in today\'s dollars.'));
     }
 
     const showBreakdown = result.yearlyBreakdown && result.yearlyBreakdown.length > 0;
@@ -456,7 +456,7 @@ export default function decorate(block) {
       const sortIcon = '<span class="compound-interest-calculator-table-sort" aria-hidden="true">↕</span>';
       const thead = createTag('thead');
       const theadTr = createTag('tr');
-      ['Year', 'Yearly investment', 'Total investment', 'Yearly interest', 'Total interest', 'Total value'].forEach((label, i) => {
+      ['Year', 'Saved this year', 'Total saved', 'Growth this year', 'Total growth', 'Trip fund value'].forEach((label, i) => {
         const th = createTag('th', { class: i === 0 ? 'compound-interest-calculator-table-th-year' : 'compound-interest-calculator-table-th-num' });
         th.innerHTML = label + sortIcon;
         theadTr.append(th);

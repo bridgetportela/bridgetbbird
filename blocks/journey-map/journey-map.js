@@ -62,7 +62,7 @@ export default function decorate(block) {
   block.textContent = '';
   block.classList.add('journey-map');
 
-  const intro = createTag('p', { class: 'journey-map-intro' }, 'Go step by step. Complete each checkpoint to unlock the next one.');
+  const intro = createTag('p', { class: 'journey-map-intro' }, 'Follow the path: plan, book, travel, share. Complete each step to unlock the next.');
   const progressMeta = createTag('p', { class: 'journey-map-progress-meta' }, '');
   const progress = createTag('nav', { class: 'journey-map-progress', 'aria-label': 'Journey progress' });
   const progressList = createTag('ol', { class: 'journey-map-progress-list' });

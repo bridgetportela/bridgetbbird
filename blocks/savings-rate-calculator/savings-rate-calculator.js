@@ -230,10 +230,10 @@ function progressiveTax(income, brackets) {
 }
 
 function benchmark(rate) {
-  if (rate < 10) return { label: 'Below target', note: 'Try increasing savings toward at least 15-20% of after-tax income.' };
+  if (rate < 10) return { label: 'Below target', note: 'Try setting aside at least 15-20% of take-home pay for your travel fund.' };
   if (rate < 20) return { label: 'Getting started', note: 'You are building momentum. Reaching 20% is a strong next milestone.' };
-  if (rate < 30) return { label: 'On track', note: 'You are saving at a healthy pace for long-term progress.' };
-  return { label: 'Very strong', note: 'Excellent saving pace. Stay consistent and review goals yearly.' };
+  if (rate < 30) return { label: 'On track', note: 'You are saving at a healthy pace for your next adventure.' };
+  return { label: 'Very strong', note: 'Excellent pace. Keep it up and your next trip is closer than you think.' };
 }
 
 function calculate(values) {
@@ -301,12 +301,12 @@ function metric(title, value, note) {
 function buildLegend() {
   const legend = createTag('details', { class: 'savings-rate-calculator-legend' });
   legend.append(
-    createTag('summary', {}, 'How to read this calculator'),
+    createTag('summary', {}, 'How to read this planner'),
     createTag('ul', {}, [
-      createTag('li', {}, 'Savings rate: annual savings divided by after-tax income.'),
+      createTag('li', {}, 'Travel savings rate: annual trip savings divided by after-tax income.'),
       createTag('li', {}, 'Tax estimate: federal + provincial bracket estimate only.'),
       createTag('li', {}, 'Monthly surplus: after-tax monthly income minus expenses.'),
-      createTag('li', {}, '20% target: common benchmark, not a strict rule.'),
+      createTag('li', {}, '20% target: a handy benchmark for funding your adventures, not a strict rule.'),
     ]),
   );
   return legend;
@@ -364,15 +364,15 @@ export default function decorate(block) {
   });
   add({
     id: 'src-monthly-savings',
-    label: 'Monthly savings/investments',
+    label: 'Monthly travel savings',
     value: DEFAULTS.monthlySavings,
     min: 0,
     step: 50,
     suffix: 'CAD',
-    tooltip: 'Savings rate = total savings / after-tax income.',
+    tooltip: 'Travel savings rate = total trip savings / after-tax income.',
   });
   add({
-    id: 'src-employer-contributions', label: 'Others', value: DEFAULTS.employerContributions, min: 0, step: 50, suffix: 'CAD',
+    id: 'src-employer-contributions', label: 'Other contributions', value: DEFAULTS.employerContributions, min: 0, step: 50, suffix: 'CAD',
   });
 
   const provinceRow = createTag('label', { class: 'savings-rate-calculator-row', for: 'src-province' });
@@ -402,11 +402,11 @@ export default function decorate(block) {
   essentials.append(provinceRow);
   inputRefs['src-province'] = provinceSelect;
   add({
-    id: 'src-current-assets', label: 'Current investable assets', value: DEFAULTS.currentAssets, min: 0, step: 1000, suffix: 'CAD',
+    id: 'src-current-assets', label: 'Current travel fund', value: DEFAULTS.currentAssets, min: 0, step: 1000, suffix: 'CAD',
   });
 
   const progressWrap = createTag('div', { class: 'savings-rate-calculator-progress' }, [
-    createTag('p', { class: 'savings-rate-calculator-progress-label' }, 'Savings rate progress'),
+    createTag('p', { class: 'savings-rate-calculator-progress-label' }, 'Travel savings rate progress'),
     createTag('div', { class: 'savings-rate-calculator-progress-track' }, [
       createTag('span', { class: 'savings-rate-calculator-progress-fill' }),
     ]),
@@ -437,17 +437,17 @@ export default function decorate(block) {
     output.textContent = '';
     output.append(
       metric(
-        'Savings rate',
+        'Travel savings rate',
         percent(result.savingsRate),
-        'Savings rate = total savings divided by after-tax income.',
+        'Travel savings rate = total trip savings divided by after-tax income.',
       ),
       metric(
         'Estimated effective tax',
         percent(result.estimatedEffectiveRate),
         'Estimated from federal + provincial progressive brackets and basic credits.',
       ),
-      metric('Net savings per month', money(result.totalSavingsMonthly), 'Includes your monthly savings and employer contributions.'),
-      metric('Net savings per year', money(result.totalSavingsAnnual), 'Annualized from your monthly savings behavior.'),
+      metric('Travel fund per month', money(result.totalSavingsMonthly), 'Includes your monthly travel savings and other contributions.'),
+      metric('Travel fund per year', money(result.totalSavingsAnnual), 'Annualized from your monthly saving habit.'),
       metric(
         'Monthly surplus',
         money(result.monthlyGap),
@@ -463,12 +463,12 @@ export default function decorate(block) {
       metric(
         `Extra needed for ${result.targetRate}% target`,
         money(result.extraNeededForTarget),
-        'How much additional monthly saving would help you reach a 20% savings rate.',
+        'How much more per month would get you to a 20% travel savings rate.',
       ),
       metric(
-        'Asset coverage',
+        'Travel fund coverage',
         `${result.assetsCoverageYears.toFixed(1)} years`,
-        'How many years your current assets could cover current spending.',
+        'How many years of current spending your travel fund could cover today.',
       ),
     );
 

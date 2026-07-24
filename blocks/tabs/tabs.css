@@ -122,7 +122,7 @@ main .section .tabs {
 
 .tabs .tab .section h2 {
   font-family: var(--font-family-serif);
-  font-weight: 500;
+  font-weight: 700;
   font-size: var(--heading-font-size-m);
   color: light-dark(var(--color-ink), var(--color-parchment));
 }

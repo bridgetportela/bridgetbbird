@@ -111,12 +111,12 @@ function metric(title, value, note) {
 function buildLegend() {
   const legend = createTag('details', { class: 'networth-calculator-legend' });
   legend.append(
-    createTag('summary', {}, 'How to read this calculator'),
+    createTag('summary', {}, 'How to read this planner'),
     createTag('ul', {}, [
-      createTag('li', {}, 'Net worth = total assets - total liabilities.'),
-      createTag('li', {}, 'Runway = liquid assets divided by monthly essentials.'),
+      createTag('li', {}, 'Travel net worth = total assets - total liabilities (what you could put toward adventures).'),
+      createTag('li', {}, 'Runway = liquid savings divided by monthly essentials.'),
       createTag('li', {}, 'Debt service ratio = debt payments divided by after-tax monthly income.'),
-      createTag('li', {}, 'Use this as a planning snapshot, not financial advice.'),
+      createTag('li', {}, 'Use this as a trip-planning snapshot, not financial advice.'),
     ]),
   );
   return legend;
@@ -125,10 +125,10 @@ function buildLegend() {
 function evaluateHealth({
   netWorth, runwayMonths, targetEmergencyMonths, debtServiceRatio, debtToAssetRatio,
 }) {
-  if (netWorth < 0) return 'Rebuild phase';
-  if (runwayMonths < 3 || debtServiceRatio > 40) return 'Stabilize cash flow';
-  if (runwayMonths < targetEmergencyMonths || debtToAssetRatio > 50) return 'Strengthen foundation';
-  return 'Healthy footing';
+  if (netWorth < 0) return 'Grounded for now';
+  if (runwayMonths < 3 || debtServiceRatio > 40) return 'Steady the basics first';
+  if (runwayMonths < targetEmergencyMonths || debtToAssetRatio > 50) return 'Almost ready to roam';
+  return 'Ready for adventure';
 }
 
 function calculate(values) {
@@ -196,19 +196,19 @@ function calculate(values) {
 
   const actions = [];
   if (liabilities.creditCard > 0) {
-    actions.push('Prioritize credit card balance first (highest interest).');
+    actions.push('Clear the credit card balance first (highest interest) so more can go to travel.');
   }
   if (runwayMonths < targetEmergencyMonths) {
-    actions.push(`Build emergency runway toward ${targetEmergencyMonths} months of essentials.`);
+    actions.push(`Build your safety cushion toward ${targetEmergencyMonths} months of essentials before booking big.`);
   }
   if (debtServiceRatio > 35) {
-    actions.push('Reduce monthly debt burden before increasing investment risk.');
+    actions.push('Ease your monthly debt load before adding trip costs.');
   }
   if (registeredShare < 50) {
-    actions.push('Review TFSA/RRSP/FHSA room before adding more taxable investments.');
+    actions.push('Keep a dedicated travel fund separate so trip money is easy to reach.');
   }
   if (!actions.length) {
-    actions.push('Strong base: keep automating savings and review once per quarter.');
+    actions.push('Strong base: automate your travel savings and start planning the next adventure.');
   }
 
   return {
@@ -389,15 +389,15 @@ export default function decorate(block) {
     const result = calculate(values());
     output.textContent = '';
     output.append(
-      metric('Net worth', money(result.netWorth), `${money(result.totalAssets)} assets - ${money(result.totalLiabilities)} liabilities.`),
-      metric('Financial health', result.health, 'Planner-style snapshot based on runway and debt pressure.'),
-      metric('Liquid net worth', money(result.liquidNetWorth), `${money(result.liquidAssets)} liquid assets - non-mortgage debt.`),
-      metric('Emergency runway', `${result.runwayMonths.toFixed(1)} months`, 'Liquid assets divided by monthly essential expenses.'),
-      metric('Debt-to-asset ratio', percent(result.debtToAssetRatio), 'Lower usually means more flexibility and resilience.'),
+      metric('Travel net worth', money(result.netWorth), `${money(result.totalAssets)} assets - ${money(result.totalLiabilities)} liabilities.`),
+      metric('Adventure readiness', result.health, 'Snapshot based on your cushion and debt pressure.'),
+      metric('Ready-to-spend savings', money(result.liquidNetWorth), `${money(result.liquidAssets)} liquid savings - non-mortgage debt.`),
+      metric('Safety cushion', `${result.runwayMonths.toFixed(1)} months`, 'Liquid savings divided by monthly essential expenses.'),
+      metric('Debt-to-asset ratio', percent(result.debtToAssetRatio), 'Lower usually means more freedom to travel.'),
       metric('Debt service ratio', percent(result.debtServiceRatio), 'Monthly debt payments as % of after-tax monthly income.'),
-      metric('Monthly cash buffer', money(result.monthlyBuffer), 'After-tax income minus essentials and debt payments.'),
-      metric('Home equity', money(result.homeEquity), result.includeHome ? 'Home value minus mortgage balance.' : 'Reference only; home excluded from net worth total.'),
-      metric('Registered share', percent(result.registeredShare), 'Share of investable assets in TFSA/RRSP/FHSA/pension accounts.'),
+      metric('Monthly travel budget', money(result.monthlyBuffer), 'After-tax income minus essentials and debt payments.'),
+      metric('Home equity', money(result.homeEquity), result.includeHome ? 'Home value minus mortgage balance.' : 'Reference only; home excluded from the total.'),
+      metric('Savings in registered accounts', percent(result.registeredShare), 'Share of savings held in TFSA/RRSP/FHSA/pension accounts.'),
       metric('Housing concentration', percent(result.housingConcentration), 'Portion of total assets tied to primary residence.'),
     );
 
